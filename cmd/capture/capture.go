@@ -42,6 +42,7 @@ var (
 	_             = flag.String("projectid", "", "project ID from https://console.nest.google.com/device-access/project-list (unused)")
 	oAuthClientID = flag.String("oauth_clientid", "", "OAuth2 Client ID")
 	oAuthSecret   = flag.String("oauth_secret", "", "OAuth2 Secret ID")
+	tokFile       = flag.String("token_file", "token.json", "path to oauth token cache")
 
 	deviceID    = flag.String("device", "", "Device ID to get video from")
 	once        = flag.Bool("once", false, "run ffmpeg once, or forever")
@@ -66,7 +67,7 @@ func main() {
 		os.MkdirAll(outDir, 0700)
 	}
 
-	c := nestsdm.OAuthClient(*oAuthClientID, *oAuthSecret)
+	c := nestsdm.OAuthClient(*oAuthClientID, *oAuthSecret, *tokFile)
 	sdm, err := smartdevicemanagement.NewService(context.Background(), option.WithHTTPClient(c))
 	if err != nil {
 		log.Fatalf("smartdevicemanagement.NewService(): %v", err)

@@ -37,13 +37,14 @@ var (
 	projectID     = flag.String("projectid", "", "project ID from https://console.nest.google.com/device-access/project-list")
 	oAuthClientID = flag.String("oauth_clientid", "", "OAuth2 Client ID")
 	oAuthSecret   = flag.String("oauth_secret", "", "OAuth2 Secret ID")
+	tokFile       = flag.String("token_file", "token.json", "path to oauth token cache")
 )
 
 func main() {
 	flag.String(flag.DefaultConfigFlagname, "", "path to config file")
 	flag.Parse()
 
-	c := nestsdm.OAuthClient(*oAuthClientID, *oAuthSecret)
+	c := nestsdm.OAuthClient(*oAuthClientID, *oAuthSecret, *tokFile)
 	sdm, err := smartdevicemanagement.NewService(context.Background(), option.WithHTTPClient(c))
 	if err != nil {
 		log.Fatalf("smartdevicemanagement.NewService(): %v", err)

@@ -80,11 +80,10 @@ type ExtendRtspStreamResults struct {
 }
 
 // Retrieve a token, saves the token, then returns the generated client.
-func getClient(config *oauth2.Config) *http.Client {
-	// The file token.json stores the user's access and refresh tokens, and is
+func getClient(config *oauth2.Config, tokFile string) *http.Client {
+	// The tokFile stores the user's access and refresh tokens, and is
 	// created automatically when the authorization flow completes for the first
 	// time.
-	tokFile := "token.json"
 	tok, err := tokenFromFile(tokFile)
 	if err != nil {
 		tok = getTokenFromWeb(config)
@@ -137,7 +136,7 @@ func saveToken(path string, token *oauth2.Token) {
 	json.NewEncoder(f).Encode(token)
 }
 
-func OAuthClient(clientID, secret string) *http.Client {
+func OAuthClient(clientID, secret, tokFile string) *http.Client {
 	cfg := &oauth2.Config{
 		ClientID:     clientID,
 		ClientSecret: secret,
@@ -145,7 +144,7 @@ func OAuthClient(clientID, secret string) *http.Client {
 		Endpoint:     google.Endpoint,
 		RedirectURL:  "urn:ietf:wg:oauth:2.0:oob",
 	}
-	return getClient(cfg)
+	return getClient(cfg, tokFile)
 }
 
 func extend(ctx context.Context, sdm *smartdevicemanagement.Service, set string, device string) (time.Time, string) {
