@@ -72,6 +72,10 @@ To compute the `setpts` value, use `1/multiplier` .  (i.e. `10x` speedup would b
 
 `-an` drops audio.  
 
+Alternatively, you can skip the explicit concatenation step and generate the time lapse from multiple files with one ffmpeg command:
+
+    ffmpeg -f concat -safe 0 -i segments -filter:v "setpts=0.041*PTS" -an timelapse.mp4
+
 ### Stream To YouTube
 
 If your YouTube channel (or Twitch.tv or similar) supports livestreaming, you can...
