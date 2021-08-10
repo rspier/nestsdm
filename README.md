@@ -70,7 +70,7 @@ Here's how to create a time lapse video from the segments recorded above.
 
 To compute the `setpts` value, use `1/multiplier` .  (i.e. `10x` speedup would be `1/10` => `0.1` )
 
-`-an` drops audio.  
+`-an` drops audio.
 
 Alternatively, you can skip the explicit concatenation step and generate the time lapse from multiple files with one ffmpeg command:
 
@@ -97,6 +97,23 @@ You can create a file that looks like this:
 And then pass it with the `--config` argument to any of the tools.
 
 (This functionality brought to you by <https://github.com/namsral/flag>.  You can also use environment variables.)
+
+## Docker
+
+The Dockerfile can be used to simplify deployment of the capture tool.
+
+Required environment variables:
+
+* DEVICE - device identify for the camera to stream from.
+* OAUTH_CLIENTID - OAuth ClientID
+* OAUTH_SECRET - OAuth Secret
+* TOKEN_FILE - Token file with access and refresh tokens.  Run CLI manually once
+  to create.
+
+By default, it writes to files to /out inside the container.
+
+[docker-run.sh](docker-run.sh) is an example of a shell script to launch the
+container.
 
 ## More Links
 
